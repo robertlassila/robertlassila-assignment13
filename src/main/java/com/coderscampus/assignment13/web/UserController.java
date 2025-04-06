@@ -92,16 +92,6 @@ public class UserController {
     	return "accounts";
 	}
 
-//	@PostMapping("/users/{userId}/accounts")
-//	public String postAccount(@PathVariable Long userId, Account account) {
-//		User user = userService.findById(userId);
-//		List<Account> accounts = user.getAccounts();
-//		accounts.add(account);
-//		user.setAccounts(accounts);
-//		userService.saveUser(user);
-//		return "redirect:/users/{userId}";
-//	}
-
 	@PostMapping("/users/{userId}/accounts")
 	public String postAccount(@PathVariable Long userId, Account account) {
     	User user = userService.findById(userId);
