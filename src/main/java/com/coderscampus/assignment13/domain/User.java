@@ -53,7 +53,7 @@ public class User {
 		this.createdDate = createdDate;
 	}
 
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	@JoinTable(name = "user_account",
 	           joinColumns = @JoinColumn(name = "user_id"), 
 	           inverseJoinColumns = @JoinColumn(name = "account_id"))

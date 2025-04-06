@@ -1,8 +1,10 @@
 package com.coderscampus.assignment13.web;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
+import com.coderscampus.assignment13.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -19,6 +21,8 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
+    @Autowired
+    private AccountRepository accountRepository;
 
 	@GetMapping("/register")
 	public String getCreateUser(ModelMap model) {
@@ -78,5 +82,34 @@ public class UserController {
 		model.put("account", account);
 		return "accounts";
 	}
-	
+
+	@GetMapping("/users/{userId}/accounts")
+	public String createAccount(ModelMap model, @PathVariable Long userId) {
+    	User user = userService.findById(userId);
+    	Account account = new Account();
+    	model.put("user", user);
+    	model.put("account", account);
+    	return "accounts";
+	}
+
+//	@PostMapping("/users/{userId}/accounts")
+//	public String postAccount(@PathVariable Long userId, Account account) {
+//		User user = userService.findById(userId);
+//		List<Account> accounts = user.getAccounts();
+//		accounts.add(account);
+//		user.setAccounts(accounts);
+//		userService.saveUser(user);
+//		return "redirect:/users/{userId}";
+//	}
+
+	@PostMapping("/users/{userId}/accounts")
+	public String postAccount(@PathVariable Long userId, Account account) {
+    	User user = userService.findById(userId);
+    	account.getUsers().add(user);
+    	user.getAccounts().add(account);
+		accountRepository.save(account);
+    	userService.saveUser(user);
+
+    	return "redirect:/users/" + userId;
+}
 }
