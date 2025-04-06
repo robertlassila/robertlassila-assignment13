@@ -35,6 +35,7 @@ public class Address {
 	public void setUser(User user) {
 		this.user = user;
 	}
+
 	@Column(length=200)
 	public String getAddressLine1() {
 		return addressLine1;
