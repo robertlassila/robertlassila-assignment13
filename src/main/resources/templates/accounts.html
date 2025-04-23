@@ -8,6 +8,7 @@
 <body>
     <div th:if="${account.accountId != null} ">
       <form action="" method="post">
+          <input type="hidden" th:field="${account.accountId}" />
         <h1 class="page-title" th:text="${account.accountName}"></h1>
           <div>
               Account Name: <input type="text" th:field="${account.accountName}" />

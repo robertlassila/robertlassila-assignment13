@@ -105,6 +105,21 @@ public class UserController {
 		return "accounts";
 	}
 
+	@PostMapping("/users/{userId}/accounts/{accountId}")
+	public String postAccount(@PathVariable Long userId, @PathVariable Long accountId, Account account) {
+    	User user = userService.findById(userId);
+		for (Account acc : user.getAccounts()) {
+        if (acc.getAccountId().equals(accountId)) {
+            acc.setAccountName(account.getAccountName());
+            account = acc;
+            break;
+        }
+    }
+		accountRepository.save(account);
+    	userService.saveUser(user);
+    	return "redirect:/users/" + userId;
+}
+
 	@GetMapping("/users/{userId}/accounts")
 	public String createAccount(ModelMap model, @PathVariable Long userId) {
     	User user = userService.findById(userId);
@@ -117,11 +132,10 @@ public class UserController {
 	@PostMapping("/users/{userId}/accounts")
 	public String postAccount(@PathVariable Long userId, Account account) {
     	User user = userService.findById(userId);
-    	account.getUsers().add(user);
+		account.getUsers().add(user);
     	user.getAccounts().add(account);
 		accountRepository.save(account);
     	userService.saveUser(user);
-
     	return "redirect:/users/" + userId;
 }
 }
