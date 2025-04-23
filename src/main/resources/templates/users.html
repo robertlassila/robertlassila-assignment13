@@ -2,11 +2,14 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<title>Users</title>
+	<link rel="stylesheet" type="text/css" th:href="@{/general.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/users.css}">
 </head>
 <body>
-<h1>Users</h1>
+
 
 <div th:if="${#lists.size(users) == 1}">
+	<h1 class="page-title">User Information Update</h1>
 	<form action="" method="post">
 		<div>
 			Username: <input type="text" th:field="${user.username}" />
@@ -36,24 +39,25 @@
 			Zip Code: <input type="text" th:field="${user.address.zipCode}" />
 		</div>
 		<div>
-			<input type="submit" value="Update User Account" />
+			<input type="submit" class="input-button" value="Update User" />
 		</div>
-	</form>
-	<form th:action="@{/users/{userId}/delete(userId=${user.userId})}" method="post">
-		<input type="submit" value="Delete User Account" />
 	</form>
 	<form th:action="@{/users/{userId}/accounts(userId=${user.userId})}" method="get">
 		<h2>Accounts</h2>
 		<div th:each="account : ${user.accounts}">
 			<a th:text="${account.accountName}" th:href="@{/users/{userId}/accounts/{accountId}(userId=${user.userId}, accountId=${account.accountId})}"></a>
 		</div>
-		<input type="submit" value="Create New Bank Account">
+		<input type="submit" class="input-button" value="Create New Bank Account">
 	</form></br>
+	<form id="delete-user-form"  th:action="@{/users/{userId}/delete(userId=${user.userId})}" method="post">
+		<input type="submit" class="input-button" value="Delete User" />
+	</form>
 	<a th:href="@{/users}">Back</a>
 
 </div>
 
 <!-- multiple users -->
+<div th:unless="${#lists.size(users) == 1}"><h1 class="page-title">Users</h1></div>
 <div th:unless="${#lists.size(users) == 1}" th:each="user : ${users}">
 	<a th:href="@{/users/{userId}(userId=${user.userId})}" th:text="${user.userId}"></a><br/>
 	<span th:text="${user.username}"></span><br/>

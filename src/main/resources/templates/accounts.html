@@ -3,16 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Account</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/general.css}">
 </head>
 <body>
     <div th:if="${account.accountId != null} ">
       <form action="" method="post">
-        <h1 th:text="${account.accountName}"></h1>
+        <h1 class="page-title" th:text="${account.accountName}"></h1>
           <div>
               Account Name: <input type="text" th:field="${account.accountName}" />
           </div>
           <div>
-              <input type="submit" value="Save Account" />
+              <input type="submit" class="input-button" value="Save Account" />
           </div>
       </form></br>
       <a th:href="@{/users/{userId}(userId=${user.userId})}">Back</a>
@@ -20,12 +21,12 @@
 
     <div th:unless="${account.accountId != null} ">
       <form action="" method="post">
-        <h1>New Account</h1>
+        <h1 class="page-title">New Account</h1>
           <div>
               Account Name: <input type="text" th:field="${account.accountName}" />
           </div>
           <div>
-              <input type="submit" value="Save Account" />
+              <input type="submit" class="input-button" value="Save Account" />
           </div>
       </form></br>
         <a th:href="@{/users/{userId}(userId=${user.userId})}">Back</a>

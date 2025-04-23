@@ -1,0 +1,30 @@
+body {
+    padding: 80px;
+    background-color: rgba(0, 72, 199, 0.63);
+    font-family: Arial;
+}
+
+.page-title {
+    text-align: center;
+}
+
+form {
+    background-color: rgba(0, 72, 199, 0.63);
+    padding: 30px;
+    border-radius: 30px;
+    margin-top: 10px;
+}
+form > div {
+    margin-top: 10px;
+}
+
+input {
+    border-radius: 5px;
+    border: 1px transparent;
+}
+.input-button {
+    padding: 4px 7px;
+}
+.input-button:hover {
+    cursor: pointer;
+}

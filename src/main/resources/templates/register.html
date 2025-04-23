@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://thymeleaf.org">
 	<head>
-		<title>Create Account</title>
+		<title>Create User</title>
+		<link rel="stylesheet" type="text/css" th:href="@{/general.css}">
 	</head>
 	<body>
-		<h1>Create Your Account</h1>
+		<h1 class="page-title">Create User</h1>
 		
 		<form action="" method="post">
 			<div>
@@ -17,7 +18,7 @@
 				Full Name: <input type="text" th:field="${user.name}" />
 			</div>
 			<div>
-				<input type="submit" value="Create Account" />
+				<input type="submit" class="input-button" value="Create User" />
 			</div>
 		</form>
 	<a th:href="@{/users}">Back</a>
