@@ -36,3 +36,14 @@ a {
 p {
     margin: 2px 0;
 }
+
+.accounts-for-user {
+    margin-bottom: 15px;
+    color: black;
+}
+.accounts-for-user > a {
+    color: black;
+}
+.accounts-for-user > a:active {
+    color: black;
+}

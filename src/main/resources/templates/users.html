@@ -44,7 +44,7 @@
 	</form>
 	<form th:action="@{/users/{userId}/accounts(userId=${user.userId})}" method="get">
 		<h2>Accounts</h2>
-		<div th:each="account : ${user.accounts}">
+		<div class="accounts-for-user" th:each="account : ${user.accounts}">
 			<a th:text="${account.accountName}" th:href="@{/users/{userId}/accounts/{accountId}(userId=${user.userId}, accountId=${account.accountId})}"></a>
 		</div>
 		<input type="submit" class="input-button" value="Create New Bank Account">
