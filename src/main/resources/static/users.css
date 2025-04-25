@@ -1,6 +1,7 @@
 #delete-user-form {
     background-color: rgba(0, 0, 0, 0);
     padding: 0px;
+    box-shadow: transparent 0px 0px 0px;
 }
 #delete-user-form > input {
     height: 40px;

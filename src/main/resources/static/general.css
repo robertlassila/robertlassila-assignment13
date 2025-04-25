@@ -13,6 +13,7 @@ form {
     padding: 30px;
     border-radius: 30px;
     margin-top: 10px;
+    box-shadow: black -1.5px 4px 15px;
 }
 form > div {
     margin-top: 10px;
@@ -27,4 +28,11 @@ input {
 }
 .input-button:hover {
     cursor: pointer;
+}
+a {
+    margin-bottom: 20px;
+}
+
+p {
+    margin: 2px 0;
 }

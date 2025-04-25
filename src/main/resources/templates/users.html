@@ -59,10 +59,11 @@
 <!-- multiple users -->
 <div th:unless="${#lists.size(users) == 1}"><h1 class="page-title">Users</h1></div>
 <div th:unless="${#lists.size(users) == 1}" th:each="user : ${users}">
-	<a th:href="@{/users/{userId}(userId=${user.userId})}" th:text="${user.userId}"></a><br/>
-	<span th:text="${user.username}"></span><br/>
-	<span th:text="${user.name}"></span><br/>
-	<span th:text="${user.password}"></span>
+	<p>User ID #: <a th:href="@{/users/{userId}(userId=${user.userId})}" th:text="${user.userId}"></a></p>
+	<p>Username: <span th:text="${user.username}"></span></p>
+	<p>Name: <span th:text="${user.name}"></span></p>
+	<p>Password: <span th:text="${user.password}"></span></p></br>
+	<p>Accounts:</p>
 	<div th:each="account : ${user.accounts}">
 		<span th:text="${account.accountName}"></span>
 	</div>
