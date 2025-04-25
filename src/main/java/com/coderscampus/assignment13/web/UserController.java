@@ -1,11 +1,10 @@
 package com.coderscampus.assignment13.web;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Set;
 
 import com.coderscampus.assignment13.repository.AccountRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.coderscampus.assignment13.service.AccountService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,10 +18,20 @@ import com.coderscampus.assignment13.service.UserService;
 @Controller
 public class UserController {
 
-	@Autowired
-	private UserService userService;
-    @Autowired
-    private AccountRepository accountRepository;
+	private final UserService userService;
+    private final AccountRepository accountRepository;
+	private final AccountService accountService;
+
+	public UserController(UserService userService, AccountRepository accountRepository, AccountService accountService) {
+		this.userService = userService;
+		this.accountRepository = accountRepository;
+		this.accountService = accountService;
+	}
+
+	@GetMapping("/error")
+	public String error() {
+		return "error";
+	}
 
 	@GetMapping("/register")
 	public String getCreateUser(ModelMap model) {
@@ -32,15 +41,13 @@ public class UserController {
 
 	@PostMapping("/register")
 	public String postCreateUser(User user) {
-		System.out.println(user);
-		userService.saveUser(user);
+		userService.save(user);
 		return "redirect:/register";
 	}
 	@GetMapping("")
 	public String sendToHome() {
 		return "redirect:/users";
 	}
-
 
 	@GetMapping("/users")
 	public String getAllUsers(ModelMap model) {
@@ -56,6 +63,9 @@ public class UserController {
 	@GetMapping("/users/{userId}")
 	public String getOneUser(ModelMap model, @PathVariable Long userId) {
 		User user = userService.findById(userId);
+		if(user == null) {
+			return "userError";
+		}
 		model.put("users", Arrays.asList(user));
 		model.put("user", user);
 		return "users";
@@ -64,24 +74,7 @@ public class UserController {
 	@PostMapping("/users/{userId}")
 	public String postOneUser(@PathVariable Long userId, User user) {
 		User existingUser = userService.findById(userId);
-    	existingUser.setUsername(user.getUsername());
-    	existingUser.setName(user.getName());
-    	if (user.getPassword() != null && !user.getPassword().isEmpty()) {
-        	existingUser.setPassword(user.getPassword());
-   	 	}
-    	if (user.getAddress() != null) {
-        if (existingUser.getAddress() == null) {
-            existingUser.setAddress(user.getAddress());
-        } else {
-            existingUser.getAddress().setAddressLine1(user.getAddress().getAddressLine1());
-            existingUser.getAddress().setAddressLine2(user.getAddress().getAddressLine2());
-            existingUser.getAddress().setCity(user.getAddress().getCity());
-            existingUser.getAddress().setRegion(user.getAddress().getRegion());
-            existingUser.getAddress().setCountry(user.getAddress().getCountry());
-            existingUser.getAddress().setZipCode(user.getAddress().getZipCode());
-			}
-    	}
-    	userService.saveUser(existingUser);
+		userService.update(user, existingUser);
 		return "redirect:/users/" + user.getUserId();
 	}
 
@@ -95,28 +88,18 @@ public class UserController {
 	public String getOneAccount(ModelMap model, @PathVariable Long userId, @PathVariable Long accountId) {
 		User user = userService.findById(userId);
 
-		Account account = user.getAccounts().stream()
-        .filter(acc -> acc.getAccountId().equals(accountId))
-        .findFirst()
-        .orElse(null);
+		Account account = accountService.findAccountByUser(user, accountId);
 
 		model.put("user", user);
 		model.put("account", account);
 		return "accounts";
 	}
 
+
 	@PostMapping("/users/{userId}/accounts/{accountId}")
 	public String postAccount(@PathVariable Long userId, @PathVariable Long accountId, Account account) {
     	User user = userService.findById(userId);
-		for (Account acc : user.getAccounts()) {
-        if (acc.getAccountId().equals(accountId)) {
-            acc.setAccountName(account.getAccountName());
-            account = acc;
-            break;
-        }
-    }
-		accountRepository.save(account);
-    	userService.saveUser(user);
+		accountService.save(user, accountId, account);
     	return "redirect:/users/" + userId;
 }
 
@@ -135,7 +118,7 @@ public class UserController {
 		account.getUsers().add(user);
     	user.getAccounts().add(account);
 		accountRepository.save(account);
-    	userService.saveUser(user);
+    	userService.save(user);
     	return "redirect:/users/" + userId;
 }
 }
